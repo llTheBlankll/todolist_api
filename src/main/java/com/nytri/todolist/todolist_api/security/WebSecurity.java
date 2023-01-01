@@ -1,5 +1,7 @@
 package com.nytri.todolist.todolist_api.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class WebSecurity {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -26,6 +30,8 @@ public class WebSecurity {
                 .password(passwordEncoder.encode("public"))
                 .roles("admin")
                 .build());
+
+        logger.debug("LUser accounts was successfully created.");
 
         return userDetailsManager;
     }
@@ -44,6 +50,8 @@ public class WebSecurity {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        logger.debug("Http Security Filter chain successfully configured.");
 
         return httpSecurity.build();
     }
