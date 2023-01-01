@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/person")
 public class PersonController {
 
     private final PersonRepository personRepository;
@@ -54,7 +54,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePerson(@PathVariable int personId) {
+    public void deletePerson(@PathVariable("id") int personId) {
         this.personRepository.deleteById(personId);
     }
 }
