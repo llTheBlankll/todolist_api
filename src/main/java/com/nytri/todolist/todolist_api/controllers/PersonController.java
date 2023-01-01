@@ -2,6 +2,8 @@ package com.nytri.todolist.todolist_api.controllers;
 
 import com.nytri.todolist.todolist_api.entities.Person;
 import com.nytri.todolist.todolist_api.repositories.PersonRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class PersonController {
 
     private final PersonRepository personRepository;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public PersonController(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -38,6 +41,7 @@ public class PersonController {
         // Check if all the inputs are valid.
         if (validatePerson(person_received)) {
             this.personRepository.save(person_received);
+            logger.debug("Person " + person_received.getPersonFirstName() + ", " + person_received.getPersonLastName() + " was added.");
         }
     }
 
@@ -49,12 +53,18 @@ public class PersonController {
         if (person.isPresent()) {
             if (validatePerson(person.get()) && validatePerson(person_received)) {
                 this.personRepository.save(person_received);
+                logger.debug("Person " + person_received.getPersonFirstName() + ", " + person_received.getPersonLastName() + " was added.");
             }
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deletePerson(@PathVariable("id") int personId) {
-        this.personRepository.deleteById(personId);
+    public void deletePersonById(@PathVariable("id") int personId) {
+        if (this.personRepository.findByIdExists(personId)) {
+            this.personRepository.deleteById(personId);
+            logger.debug("Person with an ID of " + personId + " was successfully deleted.");
+        }
+
+        logger.debug("Person with an ID of " + personId + " was not found.");
     }
 }
