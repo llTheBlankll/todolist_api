@@ -67,4 +67,13 @@ public class PersonController {
 
         logger.debug("Person with an ID of " + personId + " was not found.");
     }
+
+    @DeleteMapping("/delete")
+    public void deletePerson(@RequestBody Person person) {
+        if (validatePerson(person)) {
+            if (this.personRepository.findByIdExists(person.getId())) {
+                this.personRepository.delete(person);
+            }
+        }
+    }
 }
