@@ -35,9 +35,11 @@ public class TaskController {
 
     @PutMapping("/add")
     public void addTask(@RequestBody Task task) {
-        if (validateTask(task)) {
-            this.taskRepository.save(task);
-            logger.debug("Task ID " + task.getId() + " successfully added");
+        if (this.taskRepository.existsById(task.getId())) {
+            if (validateTask(task)) {
+                this.taskRepository.save(task);
+                logger.debug("Task ID " + task.getId() + " successfully added");
+            }
         }
     }
 
@@ -51,7 +53,7 @@ public class TaskController {
 
     @DeleteMapping("/delete/{id}")
     public void deleteTaskById(@PathVariable("id") long taskId) {
-        if (this.taskRepository.findByIdExists(taskId)) {
+        if (this.taskRepository.existsById(taskId)) {
             this.taskRepository.deleteById(taskId);
             logger.debug("Task Id " + taskId + " successfully deleted");
         }

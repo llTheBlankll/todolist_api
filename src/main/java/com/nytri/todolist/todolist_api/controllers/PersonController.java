@@ -60,7 +60,7 @@ public class PersonController {
 
     @DeleteMapping("/delete/{id}")
     public void deletePersonById(@PathVariable("id") int personId) {
-        if (this.personRepository.findByIdExists(personId)) {
+        if (this.personRepository.existsById(personId)) {
             this.personRepository.deleteById(personId);
             logger.debug("Person with an ID of " + personId + " was successfully deleted.");
         }
@@ -71,7 +71,7 @@ public class PersonController {
     @DeleteMapping("/delete")
     public void deletePerson(@RequestBody Person person) {
         if (validatePerson(person)) {
-            if (this.personRepository.findByIdExists(person.getId())) {
+            if (this.personRepository.existsById(person.getId())) {
                 this.personRepository.delete(person);
             }
         }

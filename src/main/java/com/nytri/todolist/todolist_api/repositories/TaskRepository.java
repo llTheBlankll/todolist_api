@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    boolean findByIdExists(long task_id);
+    boolean existsById(long task_id);
 }
