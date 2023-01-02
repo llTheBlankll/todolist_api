@@ -1,11 +1,13 @@
 package com.nytri.todolist.todolist_api.controllers;
 
+import com.nytri.todolist.todolist_api.Constants;
 import com.nytri.todolist.todolist_api.entities.Person;
 import com.nytri.todolist.todolist_api.repositories.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,5 +77,25 @@ public class PersonController {
                 this.personRepository.delete(person);
             }
         }
+    }
+
+    // * SEARCH
+
+    @GetMapping("/search/first_name/{first_name}")
+    public List<Person> searchByFirstName(@PathVariable("first_name") String firstName) {
+        if (firstName.length() > Constants.PERSON_FIRSTNAME_MAX_LENGTH) {
+            return this.personRepository.findByPersonFirstNameContains(firstName);
+        }
+
+        return Collections.emptyList();
+    }
+
+    @GetMapping("/search/last_name/{last_name}")
+    public List<Person> searchByLastName(@PathVariable("last_name") String lastName) {
+        if (lastName.length() > Constants.PERSON_LASTNAME_MAX_LENGTH) {
+            return this.personRepository.findByPersonLastnameContains(lastName);
+        }
+
+        return Collections.emptyList();
     }
 }
