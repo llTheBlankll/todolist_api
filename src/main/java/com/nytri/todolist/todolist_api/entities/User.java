@@ -10,9 +10,9 @@ public class User {
     @Column(name = "user_id", nullable = false)
     private Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_person")
-    private Person userPerson;
+    private Person person;
 
     @Column(name = "user_name", length = 64)
     private String userName;
@@ -34,12 +34,12 @@ public class User {
         this.id = id;
     }
 
-    public Person getUserPerson() {
-        return userPerson;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setUserPerson(Person userPerson) {
-        this.userPerson = userPerson;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public String getUserName() {
